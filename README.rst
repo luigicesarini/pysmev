@@ -1,6 +1,3 @@
-.. image:: https://travis-ci.com/LeonardoIalongo/graph-ensembles.svg?branch=master
-    :target: https://travis-ci.com/LeonardoIalongo/graph-ensembles
-
 =================
 PySMEV
 =================
@@ -24,9 +21,7 @@ Usage
 Example folder... 
 .. code-block:: python
 
-
     import os
-    # os.environ['USE_PYGEOS'] = '0'
     from os.path import dirname, abspath, join
     import sys
     THIS_DIR = dirname(__file__)
