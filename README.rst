@@ -5,7 +5,7 @@ PySMEV
 PySMEV contains a set of methods to apply the Simplified Metastatistical Extreme  
 Value analysis as implementd in:
 
-Dallan, E., & Marra, F. (2022). Enhanced summer convection explains observed trends in extreme subdaily precipitation in the Eastern Italian Alps - Codes & data (Versione v1). Zenodo. [https://doi.org/10.5281/zenodo.6088848](https://doi.org/10.5281/zenodo.6088848)
+Dallan, E., & Marra, F. (2022). Enhanced summer convection explains observed trends in extreme subdaily precipitation in the Eastern Italian Alps - Codes & data (Versione v1). Zenodo. https://doi.org/10.5281/zenodo.6088848
 
 
 Installation
@@ -18,7 +18,8 @@ Install using:
 
 Usage
 -----
-Example folder... 
+Example folder are in the folder blabla... 
+
 .. code-block:: python
 
     import os
