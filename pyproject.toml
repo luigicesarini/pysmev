@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pysmev_luigicesarini"
+version = "0.0.1"
+authors = [
+  { name="Luigi Cesarini", email="luigi.cesarini@iusspavia.it" },
+]
+description = "A python implementation of the simplified metastatistical extreme value distribution"
+readme = "README.rst"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/luigicesarini/pysmev"
+Issues = "https://github.com/luigicesarini/pysmev/issues"

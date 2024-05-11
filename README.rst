@@ -39,7 +39,7 @@ Example folder are in the folder blabla...
     import matplotlib.pyplot as plt 
     from scipy.stats import genextreme as gev
 
-    from smev import *
+    from pysmev import *
 
     file_path_input="res/s0019_v3.parquet"
     # Define the file path where you want to save the dictionary

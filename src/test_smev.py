@@ -1,4 +1,4 @@
-#!/home/luigi.cesarini//.conda/envs/my_xclim_env/bin/python
+#!/home/luigi.cesarini/.conda/envs/my_xclim_env/bin/python
 
 import os
 # os.environ['USE_PYGEOS'] = '0'
@@ -18,13 +18,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt 
 from scipy.stats import genextreme as gev
 
-from smev import *
-
-
-
-
-
-
+from pysmev import *
 
 if __name__=="__main__":
     file_path_input="res/s0019_v3.parquet"
