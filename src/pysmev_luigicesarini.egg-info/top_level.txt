@@ -1,2 +1,0 @@
-pysmev
-test_smev
