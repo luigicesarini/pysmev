@@ -17,7 +17,7 @@ Install using:
 For the moment the package is not available on pypi, so you need to install it from the source code.
 To do so, clone the repository and run the following command in the root folder of the repository:
 
-.. code-block:: bash
+.. code-block:: python
    pip install .
 
 Usage
@@ -75,7 +75,7 @@ The following is an example of how to use the class:
 
 For a complete example of how to use the class, run the file `test_smev.py` in the `src` folder with the following command:
 
-.. code-block:: bash
+.. code-block:: python
 
     python src/test_smev.py
 
