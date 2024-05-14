@@ -17,7 +17,8 @@ Install using:
 For the moment the package is not available on pypi, so you need to install it from the source code.
 To do so, clone the repository and run the following command in the root folder of the repository:
 
-.. code-block:: python
+.. code-block:: bash
+    
    pip install .
 
 Usage
