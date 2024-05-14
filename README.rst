@@ -14,11 +14,28 @@ Install using:
 
 .. code-block:: python
 
-   pip install __
+For the moment the package is not available on pypi, so you need to install it from the source code.
+To do so, clone the repository and run the following command in the root folder of the repository:
+
+   pip install .
 
 Usage
 -----
-Example folder are in the folder blabla... 
+
+The package contains a class called SMEV that can be used to apply the Simplified Metastatistical Extreme Value analysis.
+The class is initialized with the following parameters:
+
+- threshold: the threshold above which the data is considered extreme
+- separation: the separation between the data points in the time series
+- return_period: the return period for which the analysis is performed
+- durations: the durations for which the analysis is performed
+- time_resolution: the time resolution of the data
+
+The class contains the following methods:
+
+!! TO COMPLETE !!
+
+The following is an example of how to use the class:
 
 .. code-block:: python
 
@@ -54,6 +71,14 @@ Example folder are in the folder blabla...
         durations=[15,30,45,60,120,180,360,720,1440],
         time_resolution=5
     )
+
+For a complete example of how to use the class, run the file `test_smev.py` in the `src` folder with the following command:
+
+.. code-block:: bash
+
+    python src/test_smev.py
+
+
 
 Development
 -----------
