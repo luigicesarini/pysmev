@@ -1,0 +1,10 @@
+LICENSE
+README.rst
+setup.py
+src/pysmev/__init__.py
+src/pysmev/smev_class.py
+src/pysmev/utils.py
+src/pysmev.egg-info/PKG-INFO
+src/pysmev.egg-info/SOURCES.txt
+src/pysmev.egg-info/dependency_links.txt
+src/pysmev.egg-info/top_level.txt

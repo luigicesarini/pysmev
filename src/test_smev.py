@@ -131,6 +131,7 @@ if __name__=="__main__":
         arr_vals,arr_dates,n_ordinary_per_year=S.remove_short(idx_ordinary,25)
         dict_param={}
         dict_rp={}
+        dict_ordinary={}
 
         for d in range(len(S.durations)):
 
@@ -161,8 +162,10 @@ if __name__=="__main__":
                     'year':ll_yrs
                 },
                 attrs = dict(description = f"Array of {S.durations[d]} minutes precipitation data", unit = '[m]')
-            ) * 60 / S.durations[d]
+            ) * 60 / S.durations[d] #fix this as a parameters. For rainfall with different duration or for other environmetnal varaibles does not make any sense.
 
+            dict_ordinary.update({f"{S.durations[d]}":{'year':ll_yrs,'ordinary':ll_vals}})
+            
             d_param_year={}
             d_rp_year={}
             for YEAR in np.arange(1991,2021):
@@ -181,7 +184,6 @@ if __name__=="__main__":
         
             dict_param.update({f"{S.durations[d]}":d_param_year})
             dict_rp.update({f"{S.durations[d]}":d_rp_year})
-        
         dict_final={'params':dict_param,'quantiles':dict_rp,'duration':S.durations,'RP':S.return_period}
 
         print(f"\n{YEAR}")
@@ -202,3 +204,5 @@ if __name__=="__main__":
     with open(file_path_output, 'w') as f:
         json.dump(dict_final, f)
         
+    with open(f'out/{filename_output}_ordevents.json', 'w') as f:
+        json.dump(dict_ordinary, f)
