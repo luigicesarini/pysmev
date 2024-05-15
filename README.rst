@@ -101,6 +101,37 @@ To build a development environment run:
     pip install -r requirements.txt
 
 
+Contributions
+-------------
+
+## How to Submit an Issue
+
+We welcome your feedback and contributions! If you encounter a bug, have a feature request, or have any other issue you'd like to bring to our attention, please follow the steps below:
+
+1. **Check for Existing Issues**: Before you submit a new issue, please check if a similar issue already exists in our [issue tracker](https://github.com/luigicesarini/pysmev/issues). If you find an existing issue that matches your concern, you can contribute to the discussion by adding your comments or reactions.
+
+2. **Open a New Issue**: If you don't find an existing issue that matches your concern, you can open a new one by following these steps:
+   - Go to the [Issues](https://github.com/luigicesarini/pysmev/issues) section of the repository.
+   - Click on the **New Issue** button.
+   - Select the appropriate issue template, if available.
+   - Fill in the title and description with as much detail as possible. Include steps to reproduce the issue, the expected behavior, and the actual behavior. Providing screenshots or code snippets can be very helpful.
+   - Submit the issue.
+
+3. **Follow Up**: After you submit the issue, we might need more information from you. Please stay tuned for our comments and respond promptly if we request additional details.
+
+### Issue Submission Guidelines
+
+- **Be Clear and Descriptive**: Help us understand the issue quickly and thoroughly.
+- **Provide Context**: Describe the problem, including the version of the software, operating system, and any other relevant details.
+- **Include Screenshots and Logs**: If applicable, add any screenshots, logs, or stack traces that can help diagnose the problem.
+- **Use a Consistent and Descriptive Title**: This helps others quickly identify issues that might be similar to theirs.
+- **Be Respectful and Considerate**: Keep in mind that we are all part of a community and we aim to create a positive and collaborative environment.
+
+Thank you for helping us improve!
+
+[Open an Issue](https://github.com/luigicesarini/pysmev/issues/new)
+
+
 Credits
 -------
 
