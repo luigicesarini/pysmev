@@ -1,0 +1,145 @@
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+env/
+venv/
+ENV/
+ENV.bak/
+venv.bak/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.ipr
+*.iws
+*.class
+# Intellij IDEA
+.idea/
+*.iml
+
+# Eclipse
+.project
+.classpath
+.cproject
+.settings/
+
+# Visual Studio
+.vscode/
+*.code-workspace
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Environment variables
+.env
+.env.*
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.tmproj
+*.tm_properties
+.vscode/
+
+# Build directories
+build/
+dist/
+target/
+tmp/
+out/
+
+# Other IDEs and editors
+/.vs/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.idea/
+
+# Ignore coverage tool directories and files
+coverage/
+.nyc_output/
+lcov-report/
+*.lcov
+
+# Ignore all cloud and deployment configuration files
+.firebase/
+.netlify/
+
+# Ignore any files related to dependencies and package managers
+*.lock
+yarn.lock
+package-lock.json
+
