@@ -164,7 +164,7 @@ if __name__=="__main__":
                 attrs = dict(description = f"Array of {S.durations[d]} minutes precipitation data", unit = '[m]')
             ) * 60 / S.durations[d] #fix this as a parameters. For rainfall with different duration or for other environmetnal varaibles does not make any sense.
 
-            dict_ordinary.update({f"{S.durations[d]}":{'year':ll_yrs,'ordinary':ll_vals}})
+            dict_ordinary.update({f"{S.durations[d]}":{'year':ll_yrs,'ordinary':[x * 60 / S.durations[d] for x in ll_vals]}})
             
             d_param_year={}
             d_rp_year={}

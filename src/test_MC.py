@@ -49,18 +49,16 @@ if __name__=="__main__":
             shape=data['params'][f'{duration}'][f'{yr}']['shape']
             n=data['params'][f'{duration}'][f'{yr}']['n']
             a=np.random.random(size=n_iter*n).reshape(n_iter,n)
-            randy = wblinv(a,scale,shape) # weibull inversion for computing the events
+            randy = wblinv(prob=a,scale=scale,shape=shape) # weibull inversion for computing the events
             tmp=np.max(randy,axis=1)
-            print(np.max(tmp))
+            # print(np.max(tmp))
             # storing the results: AM and all the events per year
             max_ev[i_yr,id,:]=tmp # AM
             rand_ev[i_n:i_n+n ,id,:]=np.transpose(randy) # random-generated events 
             i_n+=n
     
 
-    ams=pd.DataFrame(ordevents['15']).groupby('year').max()
-    print(max_ev.shape)
-    print(ams)
+    ams=pd.DataFrame(ordevents['120']).groupby('year').max()
     fig,ax=plt.subplots(1,1,figsize=(12,4))
     ax.plot(
         ams.index,
@@ -68,7 +66,7 @@ if __name__=="__main__":
         alpha=0.95,
         marker='*',markersize=5,markerfacecolor='blue'
         )
-    [ax.plot(ams.index,max_ev[:,0,_],alpha=0.25,marker='+',markersize=1,markerfacecolor='red') for _ in range(1000)]
+    [ax.plot(ams.index,max_ev[:,4,_],alpha=0.25,marker='+',markersize=1,markerfacecolor='red') for _ in np.arange(0,1000,50)]
     ax.set_ylabel(f"mm/hr",fontsize=18,fontweight=700)
     ax.set_yticklabels(labels=[0,5,10,15,20,25,30],fontsize=14,fontweight=400)
     # ax.set_xticklabels(labels=np.arange(1401,200),fontsize=14,fontweight=400)
@@ -79,12 +77,12 @@ if __name__=="__main__":
     fig,ax=plt.subplots(1,1,figsize=(16,4))
     ax.plot(
         # pd.DataFrame(ordevents['15']).year,
-        pd.DataFrame(ordevents['15']).ordinary,
+        pd.DataFrame(ordevents['120']).ordinary,
         alpha=0.95,
         marker='*',markersize=3,markerfacecolor='blue'
         )
     ax.plot(
-        rand_ev[:,0,100] * 4,
+        rand_ev[:,4,100],
         alpha=0.25,
         marker='+',markersize=1,markerfacecolor='red'
     )
