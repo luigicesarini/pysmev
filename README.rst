@@ -12,7 +12,9 @@ Installation
 ------------
 Install using:
 
+Python version required: <3.12
 
+Moduel required can be found in either __requirements.txt__ or __env.yml__
 
 For the moment the package is not available on pypi, so you need to install it from the source code.
 To do so, clone the repository and run the following command in the root folder of the repository:
@@ -99,6 +101,14 @@ To build a development environment run:
     source env/bin/activate 
     pip install -e .
     pip install -r requirements.txt
+
+With Conda 
+
+.. code-block:: bash
+
+    conda env create -f env.yml
+    conda activate env
+    pip install -e .
 
 
 Contributions
