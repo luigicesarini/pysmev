@@ -14,7 +14,7 @@ Install using:
 
 Python version required: <3.12
 
-Moduel required can be found in either __requirements.txt__ or __env.yml__
+Moduel required can be found in either requirements.txt or env.yml
 
 For the moment the package is not available on pypi, so you need to install it from the source code.
 To do so, clone the repository and run the following command in the root folder of the repository:
@@ -114,7 +114,7 @@ With Conda
 Contributions
 -------------
 
-## How to Submit an Issue
+##How to Submit an Issue
 
 We welcome your feedback and contributions! If you encounter a bug, have a feature request, or have any other issue you'd like to bring to our attention, please follow the steps below:
 
@@ -129,7 +129,7 @@ We welcome your feedback and contributions! If you encounter a bug, have a featu
 
 3. **Follow Up**: After you submit the issue, we might need more information from you. Please stay tuned for our comments and respond promptly if we request additional details.
 
-### Issue Submission Guidelines
+###Issue Submission Guidelines
 
 - **Be Clear and Descriptive**: Help us understand the issue quickly and thoroughly.
 - **Provide Context**: Describe the problem, including the version of the software, operating system, and any other relevant details.
