@@ -19,22 +19,6 @@ class SMEV():
         self.durations = durations
         self.time_resolution = time_resolution
 
-        # # df=df_meteo
-        # try:
-        #     perc_soil=gpd.read_file(f"/mnt/data/lcesarini/2023_victor/out/old_soil/{self.prov}_suoli_cell.gpkg")
-        #     # perc_soil=gpd.read_file(f"out/old_soil/Taranto_suoli_cell.gpkg")
-        #     # print("File found at first location")
-        # except FileNotFoundError:
-        #     try:
-        #         perc_soil=gpd.read_file(f"out/{self.prov}_suoli_cell.gpkg")
-        #         # print("File found at second location")
-        #     except FileNotFoundError:
-        #         try:
-        #             perc_soil=gpd.read_file(f"out/prov/{self.prov}_suoli_cell.gpkg")
-        #             # print("File found at third location:", )
-        #         except FileNotFoundError:
-        #             print("File not found in any of the specified paths.")
-
 
     def __str__(self):
         return f"Object of SMEV class"   
