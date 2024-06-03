@@ -217,9 +217,6 @@ class SMEV():
         mean_prec  = df[df.value > 0].groupby(df[df.value > 0].index.year)['value'].mean()
         sd_prec    = df[df.value > 0].groupby(df[df.value > 0].index.year)['value'].std()
         count_prec = df[df.value > 0].groupby(df[df.value > 0].index.year)['value'].count()
-        # perc_soil=gpd.read_file(f"/mnt/data/lcesarini/2023_victor/out/old_soil/{self.prov}_suoli_cell.gpkg")
-        # perc_soil=gpd.read_file(f"out/old_soil/Taranto_suoli_cell.gpkg")
-        # print("File found at first location")
 
         return total_prec,mean_prec,sd_prec,count_prec
 
