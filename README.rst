@@ -14,7 +14,7 @@ Install using:
 
 Python version required: <3.12
 
-Moduel required can be found in either requirements.txt or env.yml
+Module required can be found in either requirements.txt or env.yml
 
 For the moment the package is not available on pypi, so you need to install it from the source code.
 To do so, clone the repository and run the following command in the root folder of the repository:
