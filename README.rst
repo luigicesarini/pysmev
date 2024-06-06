@@ -3,7 +3,12 @@ PySMEV
 =================
 
 PySMEV contains a set of methods to apply the Simplified Metastatistical Extreme  
-Value analysis as implementd in:
+Value analysis as presented in:
+
+Francesco Marra. (2020). A Unified Framework for Extreme Sub-daily Precipitation Frequency Analyses based on Ordinary Events - data & codes (Versione v1). Zenodo. https://doi.org/10.5281/zenodo.3971558
+
+
+The scripts were tested on data coming from:
 
 Dallan, E., & Marra, F. (2022). Enhanced summer convection explains observed trends in extreme subdaily precipitation in the Eastern Italian Alps - Codes & data (Versione v1). Zenodo. https://doi.org/10.5281/zenodo.6088848
 
@@ -145,3 +150,4 @@ Thank you for helping us improve!
 Credits
 -------
 
+We wish to thank Yaniv Goldschmidt from Hebrew University yanivfry@gmail.com
