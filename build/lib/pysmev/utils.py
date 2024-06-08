@@ -54,5 +54,5 @@ if __name__=='__main__':
     prob  = np.random.random(size=10).reshape(5,2)  # probability
 
     result = wblinv(prob, shape, scale)
-    print(result.shape)
+    [print(f"{r}") for r in result]
     # print(f"{result=: >12.2f}")

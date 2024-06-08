@@ -19,22 +19,6 @@ class SMEV():
         self.durations = durations
         self.time_resolution = time_resolution
 
-        # # df=df_meteo
-        # try:
-        #     perc_soil=gpd.read_file(f"/mnt/data/lcesarini/2023_victor/out/old_soil/{self.prov}_suoli_cell.gpkg")
-        #     # perc_soil=gpd.read_file(f"out/old_soil/Taranto_suoli_cell.gpkg")
-        #     # print("File found at first location")
-        # except FileNotFoundError:
-        #     try:
-        #         perc_soil=gpd.read_file(f"out/{self.prov}_suoli_cell.gpkg")
-        #         # print("File found at second location")
-        #     except FileNotFoundError:
-        #         try:
-        #             perc_soil=gpd.read_file(f"out/prov/{self.prov}_suoli_cell.gpkg")
-        #             # print("File found at third location:", )
-        #         except FileNotFoundError:
-        #             print("File not found in any of the specified paths.")
-
 
     def __str__(self):
         return f"Object of SMEV class"   
@@ -93,7 +77,8 @@ class SMEV():
                 if not temp:
                     temp.append(index)
                 else:
-                    if (dates[index] - dates[temp[-1]]).item() > (self.separation * 3.6e+12):  # Assuming 24 is the number of hours
+                    #numpy delta is in nanoseconds, it  might be better to do dates[index] - dates[temp[-1]]).item() / np.timedelta64(1, 'm')
+                    if (dates[index] - dates[temp[-1]]).item() > (self.separation * 3.6e+12):  # Assuming 24 is the number of hours, nanoseconds * 3.6e+12 = hours
                         if len(temp) >= 1:
                             consecutive_values.append(dates[temp])
                         temp = []
@@ -111,11 +96,12 @@ class SMEV():
         
         Parameters
         ----------
+        - self.time_resolution: Used to calculate lenght of storm
         - list_ordinary list: list of indices of ordinary events as returned by `get_ordinary_events`.
         - min_duration (int): minimun number of minutes tto define an event.
         - pr_field (string): The name of the df column with precipitation values.
         - hydro_year_field (string): The name of the df column with hydrological years values.
-
+        
         Returns
         -------
         - consecutive_values np.array: index of time of consecutive values defining the ordinary events.
@@ -125,9 +111,9 @@ class SMEV():
         --------
         """
         if isinstance(list_ordinary[0][0],pd.Timestamp):
-
-            ll_short=[True if ev[-1]-ev[0] >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
-            ll_dates=[(ev[-1].strftime("%Y-%m-%d %H:%M:%S"),ev[0].strftime("%Y-%m-%d %H:%M:%S")) if ev[-1]-ev[0] >= pd.Timedelta(minutes=25) else (np.nan,np.nan) for ev in list_ordinary]
+            # event is multiplied by its lenght to get duration and compared with min_duration setup
+            ll_short=[True if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
+            ll_dates=[(ev[-1].strftime("%Y-%m-%d %H:%M:%S"),ev[0].strftime("%Y-%m-%d %H:%M:%S")) if ev[-1]-ev[0] >=  pd.Timedelta(min_duration) else (np.nan,np.nan) for ev in list_ordinary]
 
             arr_vals=np.array(ll_short)[ll_short]
             arr_dates=np.array(ll_dates)[ll_short]
@@ -137,9 +123,9 @@ class SMEV():
             n_ordinary_per_year=list_year.reset_index().groupby(["year"]).count()
             # n_ordinary=n_ordinary_per_year.mean().values.item()
         elif isinstance(list_ordinary[0][0],np.datetime64):
-            ll_short=[True if (ev[-1]-ev[0]).astype('timedelta64[m]') >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
-            ll_dates=[(ev[-1],ev[0]) if (ev[-1]-ev[0]).astype('timedelta64[m]') >= pd.Timedelta(minutes=25) else (np.nan,np.nan) for ev in list_ordinary]
-
+            ll_short=[True if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
+            ll_dates=[(ev[-1],ev[0]) if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(min_duration) else (np.nan,np.nan) for ev in list_ordinary]
+           
             arr_vals=np.array(ll_short)[ll_short]
             arr_dates=np.array(ll_dates)[ll_short]
  
@@ -233,9 +219,6 @@ class SMEV():
         mean_prec  = df[df.value > 0].groupby(df[df.value > 0].index.year)['value'].mean()
         sd_prec    = df[df.value > 0].groupby(df[df.value > 0].index.year)['value'].std()
         count_prec = df[df.value > 0].groupby(df[df.value > 0].index.year)['value'].count()
-        # perc_soil=gpd.read_file(f"/mnt/data/lcesarini/2023_victor/out/old_soil/{self.prov}_suoli_cell.gpkg")
-        # perc_soil=gpd.read_file(f"out/old_soil/Taranto_suoli_cell.gpkg")
-        # print("File found at first location")
 
         return total_prec,mean_prec,sd_prec,count_prec
 
