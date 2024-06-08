@@ -69,7 +69,11 @@ if __name__=="__main__":
             )
 
             # ds.sel(time=slice(arr_dates[-7,1],arr_dates[-7,0]))[f'tp{durations[d]}'].max(skipna=True).item()
+            
+            #TODO: Improve following line. It has efficiency issue and cuased 95% of whole time for run this code.
+            # It will be nice to add this as function to SMEV class.
             ll_vals=[ds.sel(time=slice(arr_dates[_,1],arr_dates[_,0]))[f'tp{S.durations[d]}'].max(skipna=True).item() for _ in range(arr_dates.shape[0])]
+            #
             ll_yrs=[int(arr_dates[_,1][0:4]) for _ in range(arr_dates.shape[0])]
 
             # Create xarray dataset
@@ -86,6 +90,7 @@ if __name__=="__main__":
             
             d_param_year={}
             d_rp_year={}
+            #this use SMEV by year (note: original code is designed to esimate in whole timeseries)
             for YEAR in np.arange(1991,2021):
                 if YEAR not in ds_ams.year.values:
                     continue
