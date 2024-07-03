@@ -70,10 +70,30 @@ if __name__=="__main__":
 
             # ds.sel(time=slice(arr_dates[-7,1],arr_dates[-7,0]))[f'tp{durations[d]}'].max(skipna=True).item()
             
-            #TODO: Improve following line. It has efficiency issue and cuased 95% of whole time for run this code.
             # It will be nice to add this as function to SMEV class.
-            ll_vals=[ds.sel(time=slice(arr_dates[_,1],arr_dates[_,0]))[f'tp{S.durations[d]}'].max(skipna=True).item() for _ in range(arr_dates.shape[0])]
-            #
+            # old line has efficiency issue, meaning it was very slow. 
+            # old line: ll_vals=[ds.sel(time=slice(arr_dates[_,1],arr_dates[_,0]))[f'tp{S.durations[d]}'].max(skipna=True).item() for _ in range(arr_dates.shape[0])]
+            # update lines below:
+            # Convert time index to numpy array
+            time_index = ds['time'].values
+
+            # Use numpy indexing to get the max values efficiently
+            ll_vals = []
+            for i in range(arr_dates.shape[0]):
+                start_time_idx = np.searchsorted(time_index, arr_dates[i, 1])
+               
+                end_time_idx = np.searchsorted(time_index, arr_dates[i, 0])
+                
+                # Check if start and end times are the same
+                if start_time_idx == end_time_idx:
+                    ll_val = ds[f'tp{S.durations[d]}'].values[start_time_idx]
+                else:
+                    # the +1 in end_time_index is because then we search by index but we want to includde last as well,
+                    # without, it slices eg. end index is 10, without +1 it slices 0 to 9 instead of 0 to 10 (stops 1 before)
+                    ll_val = np.nanmax(ds[f'tp{S.durations[d]}'].values[start_time_idx:end_time_idx+1])
+                
+                ll_vals.append(ll_val)
+            
             ll_yrs=[int(arr_dates[_,1][0:4]) for _ in range(arr_dates.shape[0])]
 
             # Create xarray dataset
@@ -154,7 +174,29 @@ if __name__=="__main__":
                 attrs = dict(description = f"Array of {S.durations[d]} minutes precipitation data",unit = '[m]')
             )
             # ds.sel(time=slice(arr_dates[-7,1],arr_dates[-7,0]))[f'tp{durations[d]}'].max(skipna=True).item()
-            ll_vals=[ds.sel(time=slice(arr_dates[_,1],arr_dates[_,0]))[f'tp{S.durations[d]}'].max(skipna=True).item() for _ in range(arr_dates.shape[0])]
+            # old line: ll_vals=[ds.sel(time=slice(arr_dates[_,1],arr_dates[_,0]))[f'tp{S.durations[d]}'].max(skipna=True).item() for _ in range(arr_dates.shape[0])]
+            # new lines below:
+            # Convert time index to numpy array
+            time_index = ds['time'].values
+
+            # Use numpy indexing to get the max values efficiently
+            ll_vals = []
+            for i in range(arr_dates.shape[0]):
+                start_time_idx = np.searchsorted(time_index, arr_dates[i, 1])
+               
+                end_time_idx = np.searchsorted(time_index, arr_dates[i, 0])
+                
+                # Check if start and end times are the same
+                if start_time_idx == end_time_idx:
+                    ll_val = ds[f'tp{S.durations[d]}'].values[start_time_idx]
+                else:
+                    # the +1 in end_time_index is because then we search by index but we want to includde last as well,
+                    # without, it slices eg. end index is 10, without +1 it slices 0 to 9 instead of 0 to 10 (stops 1 before)
+                    ll_val = np.nanmax(ds[f'tp{S.durations[d]}'].values[start_time_idx:end_time_idx+1])
+                
+                ll_vals.append(ll_val)
+            
+            
             ll_yrs=[arr_dates[_,1].astype('datetime64[Y]').item().year for _ in range(arr_dates.shape[0])]
             
 
