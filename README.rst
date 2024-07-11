@@ -116,6 +116,10 @@ With Conda
     pip install -e .
 
 
+Rebuild is done by setup.py inside of new branch.
+.. code-block:: bash
+setup.py sdist bdist_wheel
+
 Contributions
 -------------
 
