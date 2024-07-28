@@ -12,13 +12,16 @@ def MC() -> None:
 
 
 class SMEV():
-    def __init__(self, threshold, separation, return_period,durations,time_resolution):
+    def __init__(self, threshold, separation, return_period,
+                        durations, time_resolution, min_duration,
+                        left_censoring=None):
         self.threshold=threshold
         self.separation = separation
         self.return_period = return_period
         self.durations = durations
-        self.time_resolution = time_resolution
-
+        self.time_resolution = time_resolution #time resolution 
+        self.min_duration = min_duration #min duration of precipitation 
+        self.left_censoring = left_censoring if left_censoring is not None else [0, 1]
 
     def __str__(self):
         return f"Object of SMEV class"   
@@ -113,7 +116,8 @@ class SMEV():
         if isinstance(list_ordinary[0][0],pd.Timestamp):
             # event is multiplied by its lenght to get duration and compared with min_duration setup
             ll_short=[True if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
-            ll_dates=[(ev[-1].strftime("%Y-%m-%d %H:%M:%S"),ev[0].strftime("%Y-%m-%d %H:%M:%S")) if ev[-1]-ev[0] >=  pd.Timedelta(min_duration) else (np.nan,np.nan) for ev in list_ordinary]
+            #TODO: Check if ll_dates are still needed caause ll_dates are filtered by ll_short anyway.
+            ll_dates=[(ev[-1].strftime("%Y-%m-%d %H:%M:%S"),ev[0].strftime("%Y-%m-%d %H:%M:%S")) if ev[-1]-ev[0] >=  pd.Timedelta(minutes=min_duration) else (np.nan,np.nan) for ev in list_ordinary]
 
             arr_vals=np.array(ll_short)[ll_short]
             arr_dates=np.array(ll_dates)[ll_short]
@@ -124,7 +128,8 @@ class SMEV():
             # n_ordinary=n_ordinary_per_year.mean().values.item()
         elif isinstance(list_ordinary[0][0],np.datetime64):
             ll_short=[True if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
-            ll_dates=[(ev[-1],ev[0]) if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(min_duration) else (np.nan,np.nan) for ev in list_ordinary]
+            #TODO: Check if ll_dates are still needed caause ll_dates are filtered by ll_short anyway.
+            ll_dates=[(ev[-1],ev[0]) if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(minutes=min_duration) else (np.nan,np.nan) for ev in list_ordinary]
            
             arr_vals=np.array(ll_short)[ll_short]
             arr_dates=np.array(ll_dates)[ll_short]
