@@ -13,14 +13,14 @@ def MC() -> None:
 
 class SMEV():
     def __init__(self, threshold, separation, return_period,
-                        durations, time_resolution, min_duration,
+                        durations, time_resolution, min_duration=None,
                         left_censoring=None):
         self.threshold=threshold
         self.separation = separation
         self.return_period = return_period
         self.durations = durations
         self.time_resolution = time_resolution #time resolution 
-        self.min_duration = min_duration #min duration of precipitation 
+        self.min_duration = min_duration if min_duration is not None else 0 #min duration of precipitation 
         self.left_censoring = left_censoring if left_censoring is not None else [0, 1]
 
     def __str__(self):
