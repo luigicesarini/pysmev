@@ -13,8 +13,8 @@ def MC() -> None:
 
 class SMEV():
     def __init__(self, threshold, separation, return_period,
-                        durations, time_resolution, min_duration, 
-l                       left_censoring=None ):
+                        durations, time_resolution, min_duration,
+                        left_censoring=None):
         self.threshold=threshold
         self.separation = separation
         self.return_period = return_period
