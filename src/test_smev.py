@@ -46,7 +46,7 @@ if __name__=="__main__":
         """
         Remove short events
         """
-        arr_vals,arr_dates,n_ordinary_per_year=S.remove_short(idx_ordinary,25)
+        arr_vals,arr_dates,n_ordinary_per_year, n_oe_mean =S.remove_short(idx_ordinary,25)
 
         dict_param={}
         dict_rp={}
@@ -153,7 +153,7 @@ if __name__=="__main__":
         """
         Remove short events
         """
-        arr_vals,arr_dates,n_ordinary_per_year=S.remove_short(idx_ordinary,25)
+        arr_vals,arr_dates,n_ordinary_per_year, n_oe_mean=S.remove_short(idx_ordinary,25)
         dict_param={}
         dict_rp={}
         dict_ordinary={}

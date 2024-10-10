@@ -27,7 +27,7 @@ class SMEV():
         return f"Object of SMEV class"   
     
 
-    def get_ordinary_events(self,data,dates,name_col='value'):
+    def get_ordinary_events(self,data,dates,name_col='value', check_gaps=True):
         """
         
         Function that extracts ordinary precipitation events out of the entire data.
@@ -35,7 +35,7 @@ class SMEV():
         Parameters
         ----------
         - data np.array: array containing the hourly values of precipitation.
-        - separation (int): The number of hours used to define an independet ordianry event. Defult: 24 hours.
+        - separation (int): The number of hours used to define an independet ordianry event. Defult: 24 hours. this is saved in SMEV S class
                         Days with precipitation amounts above this threshold are considered as ordinary events.
         - pr_field (string): The name of the df column with precipitation values.
         - hydro_year_field (string): The name of the df column with hydrological years values.
@@ -88,8 +88,60 @@ class SMEV():
                     temp.append(index)
             if len(temp) >= 1:
                 consecutive_values.append(dates[temp])
-
-
+        
+        if check_gaps == True:
+            #remove event that starts before dataset starts in regard of separation time
+            if (consecutive_values[0][0] - dates[0]).item() < (self.separation * 3.6e+12): #this numpy dt, so still in nanoseconds
+                consecutive_values.pop(0)
+            else:
+                pass
+            
+            #remove event that ends before dataset ends in regard of separation time
+            if (dates[-1] - consecutive_values[-1][-1]).item() < (self.separation * 3.6e+12): #this numpy dt, so still in nanoseconds
+                consecutive_values.pop()
+            else:
+                pass
+            
+            #Locate OE that ends before gaps in data starts.
+            # Calculate the differences between consecutive elements
+            time_diffs = np.diff(dates)
+            #difference of first element is time resolution
+            time_res = time_diffs[0]
+            # Identify gaps (where the difference is greater than 1 hour)
+            gap_indices_end = np.where(time_diffs > np.timedelta64(int(self.separation * 3.6e+12), 'ns'))[0]
+            # extend by another index in gap cause we need to check if there is OE there too
+            gap_indices_start = ( gap_indices_end  + 1)
+           
+            match_info = []
+            for gap_idx in gap_indices_end:
+                end_date = dates[gap_idx]
+                start_date = end_date - np.timedelta64(int(self.separation * 3.6e+12), 'ns')
+                # Creating an array from start_date to end_date in hourly intervals
+                temp_date_array = np.arange(start_date, end_date, time_res)
+                
+                # Checking for matching indices in consecutive_values
+                for i, sub_array in enumerate(consecutive_values):
+                    match_indices = np.where(np.isin(sub_array, temp_date_array))[0]
+                    if match_indices.size > 0:
+                        
+                        match_info.append(i)
+             
+            for gap_idx in gap_indices_start:
+                start_date = dates[gap_idx]
+                end_date = start_date + np.timedelta64(int(self.separation * 3.6e+12), 'ns')
+                # Creating an array from start_date to end_date in hourly intervals
+                temp_date_array = np.arange(start_date, end_date, time_res)
+                
+                # Checking for matching indices in consecutive_values
+                for i, sub_array in enumerate(consecutive_values):
+                    match_indices = np.where(np.isin(sub_array, temp_date_array))[0]
+                    if match_indices.size > 0:
+                        
+                        match_info.append(i)
+                        
+            for del_index in sorted( match_info, reverse=True):
+                del consecutive_values[del_index]
+                    
         return consecutive_values
     
     def remove_short(self,list_ordinary:list,min_duration:int):
@@ -125,7 +177,7 @@ class SMEV():
             filtered_list = [x for x, keep in zip(list_ordinary, ll_short) if keep]
             list_year=pd.DataFrame([filtered_list[_][0].year for _ in range(len(filtered_list))],columns=['year'])
             n_ordinary_per_year=list_year.reset_index().groupby(["year"]).count()
-            # n_ordinary=n_ordinary_per_year.mean().values.item()
+            n_ordinary=n_ordinary_per_year.values.mean() #ordinary events mean value (one of input to smev)
         elif isinstance(list_ordinary[0][0],np.datetime64):
             ll_short=[True if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
             #TODO: Check if ll_dates are still needed caause ll_dates are filtered by ll_short anyway.
@@ -137,10 +189,10 @@ class SMEV():
             filtered_list = [x for x, keep in zip(list_ordinary, ll_short) if keep]
             list_year=pd.DataFrame([filtered_list[_][0].astype('datetime64[Y]').item().year for _ in range(len(filtered_list))],columns=['year'])
             n_ordinary_per_year=list_year.reset_index().groupby(["year"]).count()
-            # n_ordinary=n_ordinary_per_year.mean().values.item()
+            n_ordinary=n_ordinary_per_year.values.mean() #ordinary events mean value (one of input to smev)
 
 
-        return arr_vals,arr_dates,n_ordinary_per_year
+        return arr_vals,arr_dates,n_ordinary_per_year, n_ordinary
     
     
     def estimate_smev_parameters(self,ordinary_events_df, data_portion):

@@ -62,7 +62,7 @@ if __name__=="__main__":
     
     #get ordinary events by removing too short events
     #returns boolean array, dates of OE in TO, FROM format, and count of OE in each years
-    arr_vals,arr_dates,n_ordinary_per_year=S.remove_short(idx_ordinary,min_duration)
+    arr_vals,arr_dates,n_ordinary_per_year, n_oe_mean =S.remove_short(idx_ordinary,min_duration)
     
     #innitiate dictionary to store values of SMEV
     dict_param={}
@@ -138,6 +138,8 @@ if __name__=="__main__":
     print('SMEV quantiles')
     print(json.dumps(dict_rp, indent=4))
     
+    print('n oe from event separation')
+    print(n_oe_mean)
     
     #save results of SMEV in dictionary to CSV file
     param_output_path = f'out/{file_path_without_extension}_phat_pysmev.csv'
