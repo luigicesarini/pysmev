@@ -166,11 +166,10 @@ class SMEV():
         --------
         """
         if isinstance(list_ordinary[0][0],pd.Timestamp):
-            # event is multiplied by its lenght to get duration and compared with min_duration setup
-            ll_short=[True if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
-            #TODO: Check if ll_dates are still needed caause ll_dates are filtered by ll_short anyway.
-            ll_dates=[(ev[-1].strftime("%Y-%m-%d %H:%M:%S"),ev[0].strftime("%Y-%m-%d %H:%M:%S")) if ev[-1]-ev[0] >=  pd.Timedelta(minutes=min_duration) else (np.nan,np.nan) for ev in list_ordinary]
-
+            ll_short=[True if ev[-1]-ev[0] + pd.Timedelta(minutes=self.time_resolution) >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
+            ll_dates=[(ev[-1].strftime("%Y-%m-%d %H:%M:%S"),ev[0].strftime("%Y-%m-%d %H:%M:%S")) if ev[-1]-ev[0] + pd.Timedelta(minutes=self.time_resolution) >= pd.Timedelta(minutes=min_duration)
+                           else (np.nan,np.nan) for ev in list_ordinary]
+         
             arr_vals=np.array(ll_short)[ll_short]
             arr_dates=np.array(ll_dates)[ll_short]
 
@@ -179,10 +178,9 @@ class SMEV():
             n_ordinary_per_year=list_year.reset_index().groupby(["year"]).count()
             n_ordinary=n_ordinary_per_year.values.mean() #ordinary events mean value (one of input to smev)
         elif isinstance(list_ordinary[0][0],np.datetime64):
-            ll_short=[True if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
-            #TODO: Check if ll_dates are still needed caause ll_dates are filtered by ll_short anyway.
-            ll_dates=[(ev[-1],ev[0]) if pd.Timedelta(minutes=len(ev)*self.time_resolution) >= pd.Timedelta(minutes=min_duration) else (np.nan,np.nan) for ev in list_ordinary]
-           
+            ll_short=[True if (ev[-1]-ev[0]).astype('timedelta64[m]')+ np.timedelta64(int(self.time_resolution),'m') >= pd.Timedelta(minutes=min_duration) else False for ev in list_ordinary]
+            ll_dates=[(ev[-1],ev[0]) if (ev[-1]-ev[0]).astype('timedelta64[m]') + np.timedelta64(int(self.time_resolution),'m') >= pd.Timedelta(minutes=min_duration) else (np.nan,np.nan) for ev in list_ordinary]
+                 
             arr_vals=np.array(ll_short)[ll_short]
             arr_dates=np.array(ll_dates)[ll_short]
  
@@ -190,7 +188,6 @@ class SMEV():
             list_year=pd.DataFrame([filtered_list[_][0].astype('datetime64[Y]').item().year for _ in range(len(filtered_list))],columns=['year'])
             n_ordinary_per_year=list_year.reset_index().groupby(["year"]).count()
             n_ordinary=n_ordinary_per_year.values.mean() #ordinary events mean value (one of input to smev)
-
 
         return arr_vals,arr_dates,n_ordinary_per_year, n_ordinary
     
