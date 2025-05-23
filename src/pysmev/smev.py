@@ -107,7 +107,7 @@ class SMEV:
         """
         if isinstance(data, pd.DataFrame):
             # Find values above threshold
-            above_threshold = data[data[name_col] > self.min_rain]
+            above_threshold = data[data[name_col] >= self.min_rain]
             # Find consecutive values above threshold separated by more than 24 observations
             consecutive_values = []
             temp = []
@@ -127,7 +127,7 @@ class SMEV:
             # Assuming name_col is the index for comparing threshold
             # Assuming threshold is the value above which you want to filter
 
-            above_threshold_indices = np.where(data > self.min_rain)[0]
+            above_threshold_indices = np.where(data >= self.min_rain)[0]
 
             # Find consecutive values above threshold separated by more than 24 observations
             consecutive_values = []
@@ -458,8 +458,9 @@ class SMEV:
         for d in range(len(self.durations)):
             f"{self.durations[d]}"
             # Example for return levels of 60min duration 
-            P = dict_ordinary[ f"{self.durations[d]}"]["ordinary"]
-
+            P = dict_ordinary[f"{self.durations[d]}"]["ordinary"]
+            blocks_id = dict_ordinary[f"{self.durations[d]}"]["year"]
+            
             # Estimate shape and scale parameters of weibull distribution
             # We include S_SMEV.left_censoring but actually it is not needed as it auto reads it from S_SMEV class
             smev_shape, smev_scale = self.estimate_smev_parameters(P)
@@ -473,7 +474,6 @@ class SMEV:
             
             dict_smev_outputs[f"{self.durations[d]}"] = {"SMEV_phat":  [smev_shape, smev_scale],
                                                          "RLs":smev_RL,
-                                                         "n" : n
                                                          }
 
         

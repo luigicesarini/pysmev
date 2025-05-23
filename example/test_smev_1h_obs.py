@@ -82,3 +82,6 @@ smev_RL = S_SMEV.smev_return_values(S_SMEV.return_period,
 
 
 
+
+# Here example of function which returns smev_shape, smev_scale and smev_RL for all durations defined in the class
+total_smev_output = S_SMEV.do_smev_all(dict_ordinary, n_oe_mean)
