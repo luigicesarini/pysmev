@@ -1,26 +1,26 @@
 import math
 import numpy as np
 import pandas as pd
-from typing import Union, Tuple
+from typing import Union, Tuple, Dict, Sequence, Optional
 import statsmodels.api as sm
 
 
 class SMEV:
     def __init__(
         self,
-        threshold: float,
+        min_rain: float,
         separation: int,
         return_period: list[Union[int, float]],
         durations: list[int],
         time_resolution: int,
-        min_duration: Union[None, int] = None,
+        min_event_duration: Union[None, int] = None,
         left_censoring: Union[None, list] = None,
         tolerance=0.1,
     ):
         """Initiates SMEV class.
 
         Args:
-            threshold (float): Minimum precipitation value to consider as a storm.
+            min_rain (float): Minimum precipitation value to consider as a storm.
             separation (int): Separation time between independent storms [min]
             return_period (list[Union[int, float]]): List of return periods of interest [years].
             durations (list[Union[int]]): List of durations of interest [min].
@@ -31,12 +31,12 @@ class SMEV:
                 of the data to be used for the parameters estimation. Defaults to None.\
                 If None, it is set to [0, 1].
         """
-        self.threshold = threshold
+        self.min_rain = min_rain
         self.separation = separation
         self.return_period = return_period
         self.durations = durations
         self.time_resolution = time_resolution
-        self.min_duration = min_duration if min_duration is not None else 0
+        self.min_event_duration = min_event_duration if min_event_duration is not None else 0
         self.left_censoring = left_censoring if left_censoring is not None else [0, 1]
         self.tolerance = tolerance
         self.__incomplete_years_removed__ = False
@@ -103,11 +103,11 @@ class SMEV:
                 Defaults to True.
 
         Returns:
-            list: Consecutive values above `self.threshold` separated by more `self.seperation`.
+            list: Consecutive values above `self.min_rain` separated by more `self.seperation`.
         """
         if isinstance(data, pd.DataFrame):
             # Find values above threshold
-            above_threshold = data[data[name_col] > self.threshold]
+            above_threshold = data[data[name_col] > self.min_rain]
             # Find consecutive values above threshold separated by more than 24 observations
             consecutive_values = []
             temp = []
@@ -127,7 +127,7 @@ class SMEV:
             # Assuming name_col is the index for comparing threshold
             # Assuming threshold is the value above which you want to filter
 
-            above_threshold_indices = np.where(data > 0)[0]
+            above_threshold_indices = np.where(data > self.min_rain)[0]
 
             # Find consecutive values above threshold separated by more than 24 observations
             consecutive_values = []
@@ -212,7 +212,7 @@ class SMEV:
         return consecutive_values
 
     def remove_short(
-        self, list_ordinary: list, min_duration: int
+        self, list_ordinary: list
     ) -> Tuple[np.ndarray, np.ndarray, pd.DataFrame, float]:
         """Function that removes ordinary events too short.
         Also, it calculates the mean number of ordinary events per year after removal.
@@ -231,7 +231,7 @@ class SMEV:
             ll_short = [
                 True
                 if ev[-1] - ev[0] + pd.Timedelta(minutes=self.time_resolution)
-                >= pd.Timedelta(minutes=min_duration)
+                >= pd.Timedelta(minutes=self.min_event_duration)
                 else False
                 for ev in list_ordinary
             ]
@@ -241,7 +241,7 @@ class SMEV:
                     ev[0].strftime("%Y-%m-%d %H:%M:%S"),
                 )
                 if ev[-1] - ev[0] + pd.Timedelta(minutes=self.time_resolution)
-                >= pd.Timedelta(minutes=min_duration)
+                >= pd.Timedelta(minutes=self.min_event_duration)
                 else (np.nan, np.nan)
                 for ev in list_ordinary
             ]
@@ -263,7 +263,7 @@ class SMEV:
                 True
                 if (ev[-1] - ev[0]).astype("timedelta64[m]")
                 + np.timedelta64(int(self.time_resolution), "m")
-                >= pd.Timedelta(minutes=min_duration)
+                >= pd.Timedelta(minutes=self.min_event_duration)
                 else False
                 for ev in list_ordinary
             ]
@@ -271,7 +271,7 @@ class SMEV:
                 (ev[-1], ev[0])
                 if (ev[-1] - ev[0]).astype("timedelta64[m]")
                 + np.timedelta64(int(self.time_resolution), "m")
-                >= pd.Timedelta(minutes=min_duration)
+                >= pd.Timedelta(minutes=self.min_event_duration)
                 else (np.nan, np.nan)
                 for ev in list_ordinary
             ]
@@ -378,20 +378,27 @@ class SMEV:
         return dict_ordinary, dict_AMS
         
     def estimate_smev_parameters(
-        self, ordinary_events_df: pd.DataFrame, data_portion: list[Tuple[int, float]]
+        self, 
+        ordinary_events: Union[Sequence[float], np.ndarray, pd.Series],  
+        data_portion: Optional[Tuple[float, float]] = None
     ) -> list[float]:
         """Function that estimates shape and scale parameters of the Weibull distribution.
 
         Args:
-            ordinary_events_df (pd.DataFrame): Dataframe with values of ordinary events.
+            ordinary_events: 1D list, array, or series of ordinary event values.
             data_portion (list): Lower and upper limits of the probabilities of data \
                 to be used for the parameters estimation.
 
         Returns:
             list[float]: Shape and scale parameters of the Weibull distribution.
         """
-
-        sorted_df = np.sort(ordinary_events_df)
+        
+        if data_portion is None:
+            data_portion = self.left_censoring  # Assumes it's a Tuple[float, float]
+        
+        # input must be 1D array
+        ordinary_events = np.asarray(ordinary_events).flatten()
+        sorted_df = np.sort(ordinary_events)
         ECDF = np.arange(1, 1 + len(sorted_df)) / (1 + len(sorted_df))
         fidx = max(1, math.floor((len(sorted_df)) * data_portion[0]))
         tidx = math.ceil(len(sorted_df) * data_portion[1])
@@ -440,6 +447,37 @@ class SMEV:
             )
 
         return intensity
+    
+    def do_smev_all(self, 
+        dict_ordinary: Dict[str, pd.DataFrame],
+        n: float
+        
+    ) -> Dict[str, pd.DataFrame]:
+        
+        dict_smev_outputs = {}
+        for d in range(len(self.durations)):
+            f"{self.durations[d]}"
+            # Example for return levels of 60min duration 
+            P = dict_ordinary[ f"{self.durations[d]}"]["ordinary"]
+
+            # Estimate shape and scale parameters of weibull distribution
+            # We include S_SMEV.left_censoring but actually it is not needed as it auto reads it from S_SMEV class
+            smev_shape, smev_scale = self.estimate_smev_parameters(P)
+
+            # estimate return period (quantiles) with SMEV
+            smev_RL = self.smev_return_values(self.return_period,
+                                              smev_shape, 
+                                              smev_scale, 
+                                              n
+                                              )
+            
+            dict_smev_outputs[f"{self.durations[d]}"] = {"SMEV_phat":  [smev_shape, smev_scale],
+                                                         "RLs":smev_RL,
+                                                         "n" : n
+                                                         }
+
+        
+        return dict_smev_outputs
 
     def get_stats(
         df: pd.DataFrame,
