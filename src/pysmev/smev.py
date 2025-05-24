@@ -510,7 +510,7 @@ class SMEV:
         return total_prec, mean_prec, sd_prec, count_prec
 
     def SMEV_bootstrap_uncertainty(
-        self, P: np.ndarray, blocks_id: np.ndarray, niter: int, n: float
+        self, P: np.ndarray, blocks_id: np.ndarray, niter: int,
     ):
         """Function that bootstraps uncertainty of SMEV return values.
 
@@ -551,13 +551,15 @@ class SMEV:
             Bid = np.concatenate(Bid)
 
             try:
+                n_temporary = len(Pr) / M
+                
                 # estimate shape and  scale parameters of weibull distribution
                 SMEV_shape, SMEV_scale = self.estimate_smev_parameters(
                     Pr, self.left_censoring
                 )
                 # estimate return period (quantiles) with SMEV
                 smev_RP = self.smev_return_values(
-                    self.return_period, SMEV_shape, SMEV_scale, n
+                    self.return_period, SMEV_shape, SMEV_scale, n_temporary
                 )
                 # Store results
                 RL_unc[ii, :] = smev_RP
