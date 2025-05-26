@@ -88,7 +88,7 @@ plotting.SMEV_FIG_valid(AMS,
                         S_SMEV.return_period, 
                         smev_RL, 
                         smev_RL_unc,
-                        xlimits=[0.1, 100],
+                        xlimits=[1, 100],
                         ylimits=[0, 100],)
 plt.title("The SMEV model validation")
 plt.ylabel("60-minute precipitation (mm)")
@@ -98,3 +98,6 @@ plt.show()
 
 # Here example of function which returns smev_shape, smev_scale and smev_RL for all durations defined in the class
 total_smev_output = S_SMEV.do_smev_all(dict_ordinary, n_oe_mean)
+# Note that all RLs are in depth depth and not in intensities.
+# To transfer to intensities you must multiply by 60 and divide by given duration. eg. total_smev_output["1440"]["RLs"]*60/1440
+print(total_smev_output)

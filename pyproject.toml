@@ -37,4 +37,4 @@ url = "https://github.com/luigicesarini/pysmev"
 package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
-pyTENAX = ["res/*"]
+pysmev = ["res/*"]
