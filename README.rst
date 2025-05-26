@@ -114,9 +114,9 @@ Thank you for helping us improve!
 Credits
 -------
 
-We wish to thank Yaniv Goldschmidt from Hebrew University yanivfry@gmail.com
-
-PySMEV wouldn't be at this stage without pyTENAX community https://github.com/PetrVey/pyTENAX.
-Many thanks to:
-Ella Thomas https://github.com/ELLAtho
-Jannis Hoch https://github.com/JannisHoch
+| We wish to thank Yaniv Goldschmidt from Hebrew University yanivfry@gmail.com
+| 
+| PySMEV wouldn't be at this stage without pyTENAX community https://github.com/PetrVey/pyTENAX
+| Many thanks to:
+| Ella Thomas https://github.com/ELLAtho
+| Jannis Hoch https://github.com/JannisHoch
