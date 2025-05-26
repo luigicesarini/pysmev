@@ -10,14 +10,12 @@ Presented in:
 | A simplified MEV formulation to model extremes emerging from multiple nonstationary underlying processes.
 | Advances in Water Resources, 127, 280-290, 2019
 | https://doi.org/10.1016/j.advwatres.2019.04.002
-  
-  
+| 
 | Francesco Marra, Marco Borga, Efrat Morin.
 | A unified framework for extreme sub-daily precipitation frequency analyses based on ordinary events. 
 | Geophys. Res. Lett., 47, 18, e2020GL090209. 2020.
 | https://doi.org/10.1029/2020GL090209 
-
-
+| 
 | The original code of SMEV written in Matlab is available from:
 | https://doi.org/10.5281/zenodo.3971557
 
@@ -48,8 +46,7 @@ For a complete example of how to use the class, please see the files in the `exa
 | Example for 60-min data `example_smev_1h_obs.py` 
 | In this case we use data coming from https://doi.org/10.5281/zenodo.7142384
 | Dallan, E. (2022). How well does a convection-permitting climate model represent the reverse orographic effect of extreme hourly precipitation? - Observed precipitation data
-
-
+| 
 | Example for 5-min data `example_smev_5min_obs.py` 
 | In this case we use data coming from https://doi.org/10.5281/zenodo.6088847
 | Dallan, E., & Marra, F. (2022). Enhanced summer convection explains observed trends in extreme subdaily precipitation in the Eastern Italian Alps - Codes & data (Versione v1). Zenodo. https://doi.org/10.5281/zenodo.6088848
