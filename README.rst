@@ -4,12 +4,21 @@ PySMEV
 
 PySMEV contains a set of methods to apply the Simplified Metastatistical Extreme Value analysis as presented in:
 
-Francesco Marra. (2020). A Unified Framework for Extreme Sub-daily Precipitation Frequency Analyses based on Ordinary Events - data & codes (Versione v1). Zenodo. https://doi.org/10.5281/zenodo.3971558
+Presented in:
 
+| Francesco Marra, Davide Zoccatelli, Moshe Armon, Efrat Morin.
+| A simplified MEV formulation to model extremes emerging from multiple nonstationary underlying processes.
+| Advances in Water Resources, 127, 280-290, 2019
+| https://doi.org/10.1016/j.advwatres.2019.04.002
+  
+| Francesco Marra, Marco Borga, Efrat Morin.
+| A unified framework for extreme sub-daily precipitation frequency analyses based on ordinary events. 
+| Geophys. Res. Lett., 47, 18, e2020GL090209. 2020.
+| https://doi.org/10.1029/2020GL090209 
 
-The scripts were tested on data coming from:
+| The original code of SMEV written in Matlab is available from:
+| https://doi.org/10.5281/zenodo.3971557
 
-Dallan, E., & Marra, F. (2022). Enhanced summer convection explains observed trends in extreme subdaily precipitation in the Eastern Italian Alps - Codes & data (Versione v1). Zenodo. https://doi.org/10.5281/zenodo.6088848
 
 Installation
 ------------
@@ -32,7 +41,15 @@ With Conda
 Usage
 -----
 
-For a complete example of how to use the class, please see the file `example_smev_1h_obs.py` in the `example` folder.
+For a complete example of how to use the class, please see the files in the `example` folder:
+
+| Example for 60-min data `example_smev_1h_obs.py` 
+| In this case we use data coming from https://doi.org/10.5281/zenodo.7142384
+| Dallan, E. (2022). How well does a convection-permitting climate model represent the reverse orographic effect of extreme hourly precipitation? - Observed precipitation data
+
+| Example for 5-min data `example_smev_5min_obs.py` 
+| In this case we use data coming from https://doi.org/10.5281/zenodo.6088847
+| Dallan, E., & Marra, F. (2022). Enhanced summer convection explains observed trends in extreme subdaily precipitation in the Eastern Italian Alps - Codes & data (Versione v1). Zenodo. https://doi.org/10.5281/zenodo.6088848
 
 
 Development
@@ -98,3 +115,8 @@ Credits
 -------
 
 We wish to thank Yaniv Goldschmidt from Hebrew University yanivfry@gmail.com
+
+PySMEV wouldn't be at this stage without pyTENAX community https://github.com/PetrVey/pyTENAX.
+Many thanks to:
+Ella Thomas https://github.com/ELLAtho
+Jannis Hoch https://github.com/JannisHoch

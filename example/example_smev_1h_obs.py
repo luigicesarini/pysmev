@@ -1,10 +1,11 @@
-
 """
-The Example script of SMEV use for 1h resolution of precipitation data.
-It uses numpy version.
-Input file is csv file of AA_0200 (AA_0220; x-utm:616720; y-utm:5181393; altitude: 1499)
+The Example script of SMEV use for 1h resolution of precipitation data in CSV file.
 
-#TODO: add results of MATLAB version to be compared with this, so later we can run this tests when changing main code.
+In this case we use data coming from 10.5281/zenodo.7142384.
+Dallan, E. (2022). How well does a convection-permitting climate model represent the reverse orographic effect of extreme hourly precipitation? - Observed precipitation data
+
+
+SMEV uses numpy arrays.
 """
 from importlib_resources import files
 import numpy as np

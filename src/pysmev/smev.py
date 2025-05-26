@@ -21,7 +21,7 @@ class SMEV:
 
         Args:
             min_rain (float): Minimum precipitation value to consider as a storm.
-            separation (int): Separation time between independent storms [min]
+            separation (int): Separation time between independent storms [min], shouldn't be larger than max duration in durations
             return_period (list[Union[int, float]]): List of return periods of interest [years].
             durations (list[Union[int]]): List of durations of interest [min].
             time_resolution (int): Temporal resolution of the precipitation data [min].
@@ -95,7 +95,7 @@ class SMEV:
 
         Args:
             data (Union[pd.DataFrame, np.ndarray]): Data with precipitation values.
-            dates (list): List with dates of precipitation values.\
+            dates (list): List with dates of precipitation values. dtype must be datetime64[ns]\
                 Only relevant if `data` is an array or if `check_gaps==True`.
             name_col (str, optional): Column name in `data` for precipitation values.\
                 Only relevant if `data` is a dataframe. Defaults to "value".
@@ -450,13 +450,12 @@ class SMEV:
     
     def do_smev_all(self, 
         dict_ordinary: Dict[str, pd.DataFrame],
-        n: float
+        n: float, 
         
     ) -> Dict[str, pd.DataFrame]:
         
         dict_smev_outputs = {}
         for d in range(len(self.durations)):
-            f"{self.durations[d]}"
             # Example for return levels of 60min duration 
             P = dict_ordinary[f"{self.durations[d]}"]["ordinary"]
             blocks_id = dict_ordinary[f"{self.durations[d]}"]["year"]
