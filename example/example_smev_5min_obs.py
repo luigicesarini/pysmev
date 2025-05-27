@@ -17,7 +17,7 @@ from pysmev import smev, plotting
 S_SMEV = smev.SMEV(min_rain=0.1,
                    separation=6, #in hours, shouldn't be larger than max in durations
                    return_period=[2, 5, 10, 20, 50, 100, 200, 500],
-                   durations= [10, 20, 30, 60, 120, 180, 360, 720],
+                   durations= [10, 20, 30, 60, 120, 180, 360,],
                    time_resolution=5,  # time resolution of dataset in minutes
                    min_event_duration=30, #min duration of storms 30min
                    left_censoring=[0.95, 1],
